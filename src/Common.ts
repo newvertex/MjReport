@@ -30,8 +30,8 @@ export interface MjElement {
 }
 
 export interface MjData {
-  elements: MjElement[];
   metaData: MjMetaData;
+  content: MjElement[];
   header?: MjElement[];
   footer?: MjElement[];
 }

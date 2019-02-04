@@ -9,6 +9,12 @@ export enum Heading {
   H6 = 'h6'
 }
 
+
+export enum Tags {
+  PAGE_BREAK,
+  PAGE_NUMBER,
+}
+
 export interface MjMetaData {
   title?: string;
   css?: string;
@@ -26,6 +32,6 @@ export interface MjElement {
 export interface MjData {
   elements: MjElement[];
   metaData: MjMetaData;
-  header?: MjElement;
-  footer?: MjElement;
+  header?: MjElement[];
+  footer?: MjElement[];
 }

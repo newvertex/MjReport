@@ -20,17 +20,20 @@ class Renderer {
     let root = document.getElementById('mjRoot') as HTMLElement;
 
 
-    
+
   }
 
-  addHeaderFooter(page: HTMLElement) {
+  addSections(page: HTMLElement) {
     let header = this.createElement('div', 'header_section', `header_${this.pageNumber}`);
-    header.append(...this.createElements(this.data.header as MjElement[]))
-    page.append(header)
+    header.append(...this.createElements(this.data.header as MjElement[]));
+    page.append(header);
+    
+    let content = this.createElement('div', 'content_section', `content_${this.pageNumber}`);
+    page.append(content);
     
     let footer = this.createElement('div', 'footer_section', `footer_${this.pageNumber}`);
-    footer.append(...this.createElements(this.data.footer as MjElement[]))
-    page.append(footer)
+    footer.append(...this.createElements(this.data.footer as MjElement[]));
+    page.append(footer);
   }
 
   // Create a new report page
@@ -41,7 +44,7 @@ class Renderer {
     page.setAttribute('type', `${paperType}`);
 
     // add header & footer to the page
-    this.addHeaderFooter(page);
+    this.addSections(page);
 
     root.append(page);
 

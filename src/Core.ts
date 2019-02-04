@@ -22,6 +22,37 @@ class Core {
   addCss(link: string): void {
     this.headCss.push(`<link rel="stylesheet" href="${link}">`);
   }
+  // Add text with html <P> element
+  addText(text: string, className?: string, idName?: string) {
+    let el: MjElement = {
+      elementName: 'p',
+      className: className,
+      idName: idName,
+      value: text,
+    };
+    this.elements.push(el);
+  }
+  // Add Heading with html <H?> element
+  addHeading(
+    text: string,
+    type: Heading = Heading.H1,
+    className?: string,
+    idName?: string
+  ) {
+    let el: MjElement = {
+      elementName: type,
+      className: className,
+      idName: idName,
+      value: text,
+    };
+    this.elements.push(el);
+  }
+  // Add special internal tag for page break
+  addPageBreak() {
+    let el: MjElement = { elementName: `${Tags.PAGE_BREAK}` };
+    this.elements.push(el);
+  }
+
   // Main generator function that's generate final data object
   generate() {}
 }

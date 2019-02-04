@@ -1,4 +1,4 @@
-import { MjData, MjMetaData } from './Common';
+import { MjData, MjMetaData, MjElement } from './Common';
 import PaperType from './PaperType';
 
 class Renderer {
@@ -19,35 +19,22 @@ class Renderer {
 
     let root = document.getElementById('mjRoot') as HTMLElement;
 
-    console.log('Start Drawing . . .');
-    for (let i in this.data.elements) {
-      console.log('Draw Element');
-      let item = this.data.elements[i];
-      let el = this.createElement(
-        item.elementName,
-        item.className,
-        item.idName
-      );
-      el.innerHTML = item.value || '';
-      root.append(el);
-    }
+
+    
   }
 
   addHeaderFooter(page: HTMLElement) {
     let header = this.createElement('div', 'header_section', `header_${this.pageNumber}`);
-    // header.innerHTML = this.data.header ;
+    header.append(...this.createElements(this.data.header as MjElement[]))
     page.append(header)
     
     let footer = this.createElement('div', 'footer_section', `footer_${this.pageNumber}`);
-    // footer.innerHTML = this.data.footer ;
+    footer.append(...this.createElements(this.data.footer as MjElement[]))
     page.append(footer)
   }
 
   // Create a new report page
-  private newPage(
-    root: HTMLElement,
-    paperType: PaperType = PaperType.A4_Portrait
-  ): HTMLElement {
+  private newPage(root: HTMLElement, paperType: PaperType = PaperType.A4_Portrait): HTMLElement {
     this.pageNumber += 1; // Increase the page number
 
     let page = this.createElement('page', 'page_section', `page_${this.pageNumber}`);
@@ -61,12 +48,22 @@ class Renderer {
     return page;
   }
 
+  // Create multiple element
+  private createElements(elements: MjElement[]): HTMLElement[] {
+    let items: HTMLElement[] = [];
+
+    for (let item of elements) {
+      let el = this.createElement(item.elementName, item.className, item.idName);
+      el.innerHTML = item.value || '';
+      
+      items.push(el);
+    }
+
+    return items;
+  }
+  
   // Create a new html element
-  private createElement(
-    elementName: string,
-    className?: string,
-    idName?: string
-  ) {
+  private createElement(elementName: string, className?: string, idName?: string) {
     let el = document.createElement(elementName);
     if (idName) el.id = idName;
     if (className) el.className = className;

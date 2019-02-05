@@ -9,18 +9,47 @@ class Renderer {
   draw() {
     console.log('Renderer initializing . . . .');
     console.log('Loading meta data');
-
+    
     let metaData: MjMetaData = this.data.metaData;
-
+    
     let headTag = `<title>${metaData.title || 'Mj Reporter'}</title>
-      ${metaData.css}<style>${metaData.style}</style>`;
-
+    ${metaData.css}<style>${metaData.style}</style>`;
+    
     document.head.innerHTML = headTag;
-
+    
     let root = document.getElementById('mjRoot') as HTMLElement;
+    
+    console.log('Creating first page');
+    // Create first page before creating content elements
+    let currentPage = this.newPage(root, metaData.paperType);
+    let footer = currentPage.getElementsByClassName('footer_section')[0];
+    
+    console.log('Creating content elements');
+    // Create elements on current page, if catch end of the page just create a new page and continue
+    for (let item of this.data.content) {
+      let el = this.createElement(item.elementName, item.className, item.idName);
+      el.innerHTML = item.value || '';
+      
+      console.log(`Element ${el} was added to page ${this.pageNumber}`);
+      currentPage.append(el);
+      
+      // Calculate current element position with space and footer position
+      let elementSpace = el.getBoundingClientRect().top + el.getBoundingClientRect().height;
+      let footerTop = footer.getBoundingClientRect().top;
 
+      // Check to prevent element overlap on footer, if overlaped then remove element from current page and create new page and continue
+      if (footerTop < elementSpace) {
+        // Remove previously added element from page
+        currentPage.removeChild(el);
 
-
+        // Create a new page and add the previously created element to this new page
+        currentPage = this.newPage(root, metaData.paperType);
+        currentPage.append(el);
+        footer = currentPage.getElementsByClassName('footer_section')[0];
+      }
+    }
+    
+    console.log('Drawing was finished, ready to print now. ;-)');
   }
 
   addSections(page: HTMLElement) {

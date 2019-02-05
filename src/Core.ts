@@ -1,7 +1,7 @@
 import PaperType from './PaperType';
-import { MjElement, Heading, Tags } from './Common';
+import { MjElement, Heading, Tags, MjData, DefaultStyles, MjMetaData } from './Common';
 
-class Core {
+export default class Core {
   // Keep raw style css on this variable and merged into final html page before render
   private style: string = '';
 
@@ -61,5 +61,21 @@ class Core {
   }
 
   // Main generator function that's generate final data object
-  generate() {}
+  generate(): MjData {
+    let metaData: MjMetaData = {
+      title: this.title,
+      css: this.headCss.join(''),
+      paperType: this.paperType,
+      style: `${DefaultStyles} ${this.style}`
+    };
+
+    let data: MjData = {
+      metaData: metaData,
+      header: this.header,
+      footer: this.footer,
+      content: this.content,
+    }
+
+    return data;
+  }
 }

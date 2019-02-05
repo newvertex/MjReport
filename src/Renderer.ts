@@ -60,14 +60,18 @@ export default class Renderer {
 
   addSections(page: HTMLElement) {
     let header = this.createElement('div', 'header_section', `header_${this.pageNumber}`);
-    header.append(...this.createElements(this.data.header as MjElement[]));
+    let dataHeader = this.data.header as MjElement[];
+    if (dataHeader.length)
+      header.append(...this.createElements(dataHeader));
     page.append(header);
     
     let content = this.createElement('div', 'content_section', `content_${this.pageNumber}`);
     page.append(content);
     
     let footer = this.createElement('div', 'footer_section', `footer_${this.pageNumber}`);
-    footer.append(...this.createElements(this.data.footer as MjElement[]));
+    let dataFooter = this.data.footer as MjElement[];
+    if(dataFooter.length)
+      footer.append(...this.createElements(dataFooter));
     page.append(footer);
   }
 

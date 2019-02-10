@@ -1,37 +1,41 @@
 {
-  "name": "mj-report",
+  "name": "mjreport",
   "version": "0.0.1",
   "description": "A simple Javascript report library to make report from html",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/esm/index.js",
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/jest",
-    "build": "./node_modules/.bin/tsc",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm test"
+    "build:cjs": "./node_modules/.bin/tsc",
+    "build:esm": "./node_modules/.bin/tsc --module es2015 --target es5 --outDir dist/esm",
+    "build:umd": "./node_modules/.bin/rollup dist/esm/index.js --format umd --name MjReport --file dist/mjreport.umd.js",
+    "build:umd:min": "./node_modules/.bin/uglifyjs --compress --mangle --comments --output dist/mjreport.umd.min.js -- dist/mjreport.umd.js",
+    "build": "npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/newvertex/mj-report.git"
+    "url": "git+https://github.com/newvertex/MjReport.git"
   },
   "keywords": [
     "report",
-    "mj-report",
-    "js"
+    "mjreport",
+    "MjReport",
+    "js",
+    "ts"
   ],
   "author": "Mojtaba Rabiei <mojtaba.r127@gmail.com> (http://twitter.com/newvertex)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/newvertex/mj-report/issues"
+    "url": "https://github.com/newvertex/MjReport/issues"
   },
-  "homepage": "https://github.com/newvertex/mj-report#readme",
+  "homepage": "https://github.com/newvertex/MjReport#readme",
   "devDependencies": {
-    "@types/jest": "^23.3.13",
-    "jest": "^24.0.0",
-    "ts-jest": "^23.10.5",
-    "typescript": "^3.3.1"
+    "typescript": "^3.3.1",
+    "rollup": "^1.1.2",
+    "uglify-js": "^3.4.9"
   }
 }

@@ -1,11 +1,11 @@
-enum PaperType {
+export enum PaperType {
   A4_Portrait,
   A5_Portrait,
   A4_Landscape,
   A5_Landscape
 }
 
-namespace PaperType {
+export namespace PaperType {
   export function getDimension(type: PaperType): { height: number; width: number } {
     switch (type) {
       case PaperType.A4_Portrait:
@@ -25,5 +25,3 @@ namespace PaperType {
     }`;
   }
 }
-
-export default PaperType;

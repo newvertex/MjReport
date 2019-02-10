@@ -1,4 +1,4 @@
-import PaperType from "./PaperType";
+import { PaperType } from "./PaperType";
 
 export enum Heading {
   H1 = 'h1',
@@ -17,7 +17,7 @@ export enum Tags {
 
 export interface MjMetaData {
   title?: string;
-  css?: string;
+  css?: string[];
   style?: string;
   paperType?: PaperType
 }
@@ -43,12 +43,31 @@ body {
 
 page {
   background: white;
-  display: block;
   margin: 0 auto;
   margin-bottom: 0.5cm;
   box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
   display: flex;
   flex-direction: column;
+}
+
+page[type="A4_Portrait"] {
+  width: 210mm;
+  height: 297mm;
+}
+
+page[type="A4_Landscape"] {
+  width: 297mm;
+  height: 210mm;
+}
+
+page[type="A5_Portrait"] {
+  width: 148mm;
+  height: 210mm;
+}
+
+page[type="A5_Landscape"] {
+  width: 210mm;
+  height: 148mm;
 }
 
 @media print {
@@ -59,19 +78,28 @@ page {
 }
 
 .header_section {
-  width: 90%;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
   height: 100px;
   border: 1px solid red;
+  flex-shrink: 0;
 }
 
 .content_section {
-  width: 90%;
+  margin-left: 5px;
+  margin-right: 5px;
   height: 100%;
   border: 1px solid blue;
+  overflow: hidden;
 }
 
 .footer_section {
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
   height: 50px;
   border: 1px solid red;
+  flex-shrink: 0;
 }
 `;

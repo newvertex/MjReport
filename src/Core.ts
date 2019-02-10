@@ -1,7 +1,7 @@
-import PaperType from './PaperType';
-import { MjElement, Heading, Tags, MjData, DefaultStyles, MjMetaData } from './Common';
+import { PaperType } from './PaperType';
+import { MjElement, Heading, Tags, MjData, MjMetaData } from './Common';
 
-export default class Core {
+export class Core {
   // Keep raw style css on this variable and merged into final html page before render
   private style: string = '';
 
@@ -27,7 +27,7 @@ export default class Core {
 
   // Add css file link to the headCss array; a link can have relative or absolute path
   addCss(link: string): void {
-    this.headCss.push(`<link rel="stylesheet" href="${link}">`);
+    this.headCss.push(link);
   }
 
   // Add text with html <P> element
@@ -64,9 +64,9 @@ export default class Core {
   generate(): MjData {
     let metaData: MjMetaData = {
       title: this.title,
-      css: this.headCss.join(''),
+      css: this.headCss,
       paperType: this.paperType,
-      style: `${DefaultStyles} ${this.style}`
+      style: this.style
     };
 
     let data: MjData = {

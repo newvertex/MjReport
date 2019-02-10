@@ -1,61 +1,60 @@
-import { MjData, MjMetaData, MjElement, Tags } from './Common';
-import PaperType from './PaperType';
+import { MjData, MjElement, Tags, DefaultStyles } from './Common';
+import { PaperType } from './PaperType';
 
-export default class Renderer {
+export class Renderer {
   private pageNumber = 0;
 
   constructor(public data: MjData) {}
   
   draw() {
-    console.log('Renderer initializing . . . .');
-    console.log('Loading meta data');
+    // Set title of page
+    document.title = this.data.metaData.title || 'Mj Reporter';
+    // Add raw style of page in the head tag
+    let style = this.createElement('style');
+    style.innerHTML = `${DefaultStyles} ${this.data.metaData.style}`;
+    document.head.append(style);
+    // Add all css link to head tag
+    let metaDataCss = this.data.metaData.css || [];
+    let links = metaDataCss.map(link => {
+      let l = this.createElement('link');
+      l.setAttribute('rel', 'stylesheet');
+      l.setAttribute('href', link);
+      return l
+    });
+    document.head.append(...links);
     
-    let metaData: MjMetaData = this.data.metaData;
+    let root = document.getElementById('mjroot') as HTMLElement;
     
-    let headTag = `<title>${metaData.title || 'Mj Reporter'}</title>
-    ${metaData.css}<style>${metaData.style}</style>`;
-    
-    document.head.innerHTML = headTag;
-    
-    let root = document.getElementById('mjRoot') as HTMLElement;
-    
-    console.log('Creating first page');
     // Create first page before creating content elements
-    let currentPage = this.newPage(root, metaData.paperType);
-    let footer = currentPage.getElementsByClassName('footer_section')[0];
+    let currentPage = this.newPage(root, this.data.metaData.paperType);
     
-    console.log('Creating content elements');
     // Create elements on current page, if catch end of the page just create a new page and continue
     for (let item of this.data.content) {
       // Check element name to find reserved tags to do some special things
       if (item.elementName == `${Tags.PAGE_BREAK}`) {
-        currentPage = this.newPage(root, metaData.paperType);
-        footer = currentPage.getElementsByClassName('footer_section')[0];
+        currentPage = this.newPage(root, this.data.metaData.paperType);
       } else {
         let el = this.createElement(item.elementName, item.className, item.idName);
         el.innerHTML = item.value || '';
         
-        console.log(`Element ${el} was added to page ${this.pageNumber}`);
-        currentPage.append(el);
+        currentPage.content.append(el);
         
         // Calculate current element position with space and footer position
         let elementSpace = el.getBoundingClientRect().top + el.getBoundingClientRect().height;
-        let footerTop = footer.getBoundingClientRect().top;
-  
+        let footerTop = Math.ceil(currentPage.footer.getBoundingClientRect().top) + 2;
+
         // Check to prevent element overlap on footer, if overlaped then remove element from current page and create new page and continue
         if (footerTop < elementSpace) {
           // Remove previously added element from page
-          currentPage.removeChild(el);
+          currentPage.content.removeChild(el);
   
           // Create a new page and add the previously created element to this new page
-          currentPage = this.newPage(root, metaData.paperType);
-          currentPage.append(el);
-          footer = currentPage.getElementsByClassName('footer_section')[0];
+          currentPage = this.newPage(root, this.data.metaData.paperType);
+          currentPage.content.append(el);
         }
       }
     }
     
-    console.log('Drawing was finished, ready to print now. ;-)');
   }
 
   addSections(page: HTMLElement) {
@@ -73,21 +72,21 @@ export default class Renderer {
     if(dataFooter.length)
       footer.append(...this.createElements(dataFooter));
     page.append(footer);
+
+    return { header, content, footer };
   }
 
   // Create a new report page
-  private newPage(root: HTMLElement, paperType: PaperType = PaperType.A4_Portrait): HTMLElement {
+  private newPage(root: HTMLElement, paperType: PaperType = PaperType.A4_Portrait) {
     this.pageNumber += 1; // Increase the page number
 
     let page = this.createElement('page', 'page_section', `page_${this.pageNumber}`);
-    page.setAttribute('type', `${paperType}`);
-
-    // add header & footer to the page
-    this.addSections(page);
-
+    page.setAttribute('type', `${PaperType[paperType]}`);
+    
     root.append(page);
 
-    return page;
+    // add header & footer to the page
+    return Object.assign({}, page,  this.addSections(page));
   }
 
   // Create multiple element

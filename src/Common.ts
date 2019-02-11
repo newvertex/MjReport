@@ -1,6 +1,16 @@
 import { PaperType } from "./PaperType";
 
-export enum Heading {
+export enum Tags {
+  Text,
+  Heading,
+  PageBreak,
+}
+
+export interface Value {
+  text: string;
+}
+
+export enum HeadingLevel {
   H1 = 'h1',
   H2 = 'h2',
   H3 = 'h3',
@@ -9,13 +19,11 @@ export enum Heading {
   H6 = 'h6'
 }
 
-
-export enum Tags {
-  PAGE_BREAK,
-  PAGE_NUMBER,
+export interface HeadingValue extends Value {
+  level: HeadingLevel;
 }
 
-export interface MjMetaData {
+export interface MetaData {
   title?: string;
   css?: string[];
   style?: string;
@@ -23,14 +31,14 @@ export interface MjMetaData {
 }
 
 export interface MjElement {
-  elementName: string;
+  tag: Tags;
+  value?: Value | HeadingValue;
   className?: string;
   idName?: string;
-  value?: string;
 }
 
-export interface MjData {
-  metaData: MjMetaData;
+export interface Data {
+  metaData: MetaData;
   content: MjElement[];
   header?: MjElement[];
   footer?: MjElement[];

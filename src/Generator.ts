@@ -1,5 +1,5 @@
 import { PaperType } from './PaperType';
-import { MjElement, Tags, HeadingLevel, Data, MetaData } from './Common';
+import { MjElement, Tags, HeadingLevel, Data, MetaData, TableCell, TableField, TableValue } from './Common';
 
 export class Generator {
   // Keep raw style css on this variable and merged into final html page before render
@@ -39,10 +39,15 @@ export class Generator {
   addHeading(text: string, level: HeadingLevel = HeadingLevel.H1, className?: string, idName?: string): MjElement {
     return { tag: Tags.Heading, value: { text, level }, className: className, idName: idName };
   }
-
+  
   // Add special internal tag for page break
   addPageBreak(): MjElement {
     return { tag: Tags.PageBreak };
+  }
+  
+  // Add table with some style & data
+  addTable(value: TableValue, className?: string, idName?: string): MjElement {
+    return { tag: Tags.Table, value, className, idName };
   }
 
   // Set content to specify which elements have to be in the content section of a page

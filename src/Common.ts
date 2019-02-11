@@ -3,6 +3,7 @@ import { PaperType } from "./PaperType";
 export enum Tags {
   Text,
   Heading,
+  Table,
   PageBreak,
 }
 
@@ -23,6 +24,29 @@ export interface HeadingValue extends Value {
   level: HeadingLevel;
 }
 
+export interface TableCell {
+  value: string;
+  className?: string;
+  idName?: string;
+  style?: string;
+}
+
+export interface TableOptions {
+  index: number;  // Zero base
+  row: number;  // index + 1
+}
+
+export interface TableField {
+  (item: object, opt: TableOptions) : string[] | TableCell[]
+}
+
+export interface TableValue {
+  items: object[];
+  fields: string[] | TableCell[] | TableField;
+  header?: string[] | TableCell[];
+  footer?: string[] | TableCell[];
+}
+
 export interface MetaData {
   title?: string;
   css?: string[];
@@ -32,7 +56,7 @@ export interface MetaData {
 
 export interface MjElement {
   tag: Tags;
-  value?: Value | HeadingValue;
+  value?: Value | HeadingValue | TableValue;
   className?: string;
   idName?: string;
 }

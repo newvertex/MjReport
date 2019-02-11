@@ -7,21 +7,8 @@ export class Renderer {
   constructor(public data: MjData) {}
   
   draw() {
-    // Set title of page
-    document.title = this.data.metaData.title || 'Mj Reporter';
-    // Add raw style of page in the head tag
-    let style = this.createElement('style');
-    style.innerHTML = `${DefaultStyles} ${this.data.metaData.style}`;
-    document.head.append(style);
-    // Add all css link to head tag
-    let metaDataCss = this.data.metaData.css || [];
-    let links = metaDataCss.map(link => {
-      let l = this.createElement('link');
-      l.setAttribute('rel', 'stylesheet');
-      l.setAttribute('href', link);
-      return l
-    });
-    document.head.append(...links);
+    // Draw the head tag elements of page like css styles & etc...
+    this.drawHead();
     
     let root = document.getElementById('mjroot') as HTMLElement;
     
@@ -55,6 +42,24 @@ export class Renderer {
       }
     }
     
+  }
+
+  private drawHead() {
+    // Set title of page
+    document.title = this.data.metaData.title || 'Mj Reporter';
+    // Add raw style of page in the head tag
+    let style = this.createElement('style');
+    style.innerHTML = `${DefaultStyles} ${this.data.metaData.style}`;
+    document.head.append(style);
+    // Add all css link to head tag
+    let metaDataCss = this.data.metaData.css || [];
+    let links = metaDataCss.map(link => {
+      let l = this.createElement('link');
+      l.setAttribute('rel', 'stylesheet');
+      l.setAttribute('href', link);
+      return l;
+    });
+    document.head.append(...links);
   }
 
   addSections(page: HTMLElement) {

@@ -24,6 +24,13 @@ export interface HeadingValue extends Value {
   level: HeadingLevel;
 }
 
+export interface TableState {
+  element: { name: string, className: string, idName: string },
+  header: HTMLElement,
+  body: HTMLElement,
+  table: HTMLElement,
+}
+
 export interface TableCell {
   value: string;
   className?: string;
@@ -31,9 +38,17 @@ export interface TableCell {
   style?: string;
 }
 
+export enum TableReservedField {
+  index = 'index',  // Zero base
+  row = 'row',  // index + 1
+  empty = 'empty',  // an empty string = ""
+}
+
 export interface TableOptions {
+  [key: string]: any;
   index: number;  // Zero base
   row: number;  // index + 1
+  empty: string;  // an empty string = ""
 }
 
 export interface TableField {
@@ -42,9 +57,28 @@ export interface TableField {
 
 export interface TableValue {
   items: object[];
-  fields: string[] | TableCell[] | TableField;
+  fields: string[] | TableField;
   header?: string[] | TableCell[];
   footer?: string[] | TableCell[];
+}
+
+export enum TableCellType {
+  Header = 'th',
+  Body = 'td',
+}
+
+export function isTableCell(obj: string[] | TableCell[] | TableField) {
+  return Array.isArray(obj) && typeof obj[0] !== 'string';
+}
+
+export function isTableField(obj: string[] | TableCell[] | TableField) {
+  return !Array.isArray(obj) && typeof obj === 'function';
+}
+
+export interface PageHolder {
+  header: HTMLElement;
+  content: HTMLElement;
+  footer: HTMLElement;
 }
 
 export interface MetaData {

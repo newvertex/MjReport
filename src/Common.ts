@@ -68,7 +68,7 @@ export enum TableCellType {
 }
 
 export function isTableCell(obj: string[] | TableCell[] | TableField) {
-  return Array.isArray(obj) && typeof obj[0] !== 'string';
+  return Array.isArray(obj) && typeof obj[0] === 'object';
 }
 
 export function isTableField(obj: string[] | TableCell[] | TableField) {

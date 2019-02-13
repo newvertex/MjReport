@@ -210,8 +210,9 @@ export class Renderer {
     switch(element.tag) {
       case Tags.PageBreak:
         this.createNewPage();
+        break;
       case Tags.Text:
-        value = element.value as HeadingValue;
+        value = element.value as Value;
         el = this.createDomElement('p', element.className, element.idName);
         el.innerHTML = value.text;
         this.addElement(el, parent)
@@ -224,6 +225,7 @@ export class Renderer {
         break;
       case Tags.Table:
         this.createTable(element);
+        break;
     }
 
     return el;

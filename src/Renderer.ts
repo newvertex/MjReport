@@ -64,46 +64,50 @@ export class Renderer {
     // add header & footer to the page
     this.currentPage = this.addPageSections(page);
 
-    this.createElements(this.data.header, this.currentPage.header);
-    this.createElements(this.data.footer, this.currentPage.footer);
+    this.createElements(this.data.header, this.currentPage.header, false);
+    this.createElements(this.data.footer, this.currentPage.footer, false);
   }
 
   // Use global currentPage variable that holds last created page on createNewPage method
-  private addElement(el: HTMLElement, parent: HTMLElement = this.currentPage.content, state?: TableState) {
+  private addElement(el: HTMLElement, parent: HTMLElement = this.currentPage.content, noOverlap: boolean = true, state?: TableState) {
     // Just check for table creation
     if (state) {
       parent = state.body;
     }
     
     parent.append(el);
-        
-    // Calculate current element position with space and footer position
-    let elementBottom = el.getBoundingClientRect().bottom;
-    let footerTop = Math.ceil(this.currentPage.footer.getBoundingClientRect().top) + 2;
+    
+    // check if item don't need to check for overlap; use for add header/footer
+    if(noOverlap) {
+      // Calculate current element position with space and footer position
+      let elementBottom = el.getBoundingClientRect().bottom;
+      let footerTop = Math.ceil(this.currentPage.footer.getBoundingClientRect().top) + 2;
 
-    // Check to prevent element overlap on footer, if overlaped then remove element from current page and create new page and continue
-    if (footerTop < elementBottom) {
-      // Remove previously added element from page
-      parent.removeChild(el);
+      // Check to prevent element overlap on footer, if overlaped then remove element from current page and create new page and continue
+      if (footerTop < elementBottom) {
+        // Remove previously added element from page
+        parent.removeChild(el);
 
-      // Create a new page
-      this.createNewPage();
+        // Create a new page
+        this.createNewPage();
+        parent = this.currentPage.content;
 
-      // Create table again in the new created page and then add element to new one
-      if (state) {
-        state.table = this.createDomElement(state.element.name, state.element.className, state.element.idName);
-        state.body = this.createDomElement('tbody');
-        state.table.append(state.header.cloneNode(true));
-        state.table.append(state.body);
-        
-        // add new table header to new empty page
-        this.addElement(state.table)
+        // Create table again in the new created page and then add element to new one
+        if (state) {
+          state.table = this.createDomElement(state.element.name, state.element.className, state.element.idName);
+          state.body = this.createDomElement('tbody');
+          state.table.append(state.header.cloneNode(true));
+          state.table.append(state.body);
+          
+          // add new table header to new empty page
+          this.addElement(state.table)
 
-        parent = state.body;
+          parent = state.body;
+        }
+
+        // add the previously created element to this new page
+        parent.append(el);
       }
-
-      // add the previously created element to this new page
-      parent.append(el);
     }
   }
 
@@ -192,7 +196,7 @@ export class Renderer {
         row = this.createTableRow(this.getTableField(item, value.fields as string[], opt));
       }
 
-      this.addElement(row, null, state);
+      this.addElement(row, null, true, state);
     });
     
     if(value.footer) {
@@ -203,7 +207,7 @@ export class Renderer {
     }
   }
 
-  private createElement(element: MjElement, parent?: HTMLElement): HTMLElement {
+  private createElement(element: MjElement, parent?: HTMLElement, noOverlap: boolean = true): HTMLElement {
     let el = null;
     let value = null;
 
@@ -215,13 +219,13 @@ export class Renderer {
         value = element.value as Value;
         el = this.createDomElement('p', element.className, element.idName);
         el.innerHTML = value.text;
-        this.addElement(el, parent)
+        this.addElement(el, parent, noOverlap)
         break;
       case Tags.Heading:
         value = element.value as HeadingValue;
         el = this.createDomElement(value.level, element.className, element.idName);
         el.innerHTML = value.text;
-        this.addElement(el, parent)
+        this.addElement(el, parent, noOverlap)
         break;
       case Tags.Table:
         this.createTable(element);
@@ -231,9 +235,9 @@ export class Renderer {
     return el;
   }
 
-  private createElements(elements: MjElement[], parent?: HTMLElement) {
+  private createElements(elements: MjElement[], parent?: HTMLElement, noOverlap: boolean = true) {
     for(let element of elements) {
-      this.createElement(element, parent);
+      this.createElement(element, parent, noOverlap);
     }
   }
   

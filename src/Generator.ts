@@ -1,5 +1,5 @@
 import { PaperType } from './PaperType';
-import { MjElement, Tags, HeadingLevel, Data, MetaData, TableCell, TableField, TableValue } from './Common';
+import { MjElement, Tags, HeadingLevel, Data, MetaData, TableValue } from './Common';
 
 export class Generator {
   // Keep raw style css on this variable and merged into final html page before render

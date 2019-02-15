@@ -147,8 +147,6 @@ page[type="A5_Landscape"] {
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  height: 100px;
-  border: 1px solid red;
   flex-shrink: 0;
 }
 
@@ -156,7 +154,6 @@ page[type="A5_Landscape"] {
   margin-left: 5px;
   margin-right: 5px;
   height: 100%;
-  border: 1px solid blue;
   overflow: hidden;
 }
 
@@ -164,8 +161,7 @@ page[type="A5_Landscape"] {
   margin-bottom: 5px;
   margin-left: 5px;
   margin-right: 5px;
-  height: 50px;
-  border: 1px solid red;
   flex-shrink: 0;
+  overflow: hidden;
 }
 `;

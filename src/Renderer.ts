@@ -1,4 +1,4 @@
-import { Data, MjElement, Tags, DefaultStyles, HeadingLevel, HeadingValue, Value, TableValue, isTableCell, TableCell, TableCellType, PageHolder, isTableField, TableOptions, TableField, TableReservedField, TableState } from './Common';
+import { Data, MjElement, Tags, DefaultStyles, HeadingValue, Value, TableValue, isTableCell, TableCell, TableCellType, PageHolder, isTableField, TableOptions, TableField, TableReservedField, TableState } from './Common';
 import { PaperType } from './PaperType';
 
 export class Renderer {

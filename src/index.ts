@@ -1,3 +1,3 @@
 export { PaperType } from './PaperType'
-export { Core } from './Core'
+export { Generator } from './Generator'
 export { Renderer } from './Renderer'

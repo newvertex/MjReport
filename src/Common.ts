@@ -1,6 +1,17 @@
 import { PaperType } from "./PaperType";
 
-export enum Heading {
+export enum Tags {
+  Text,
+  Heading,
+  Table,
+  PageBreak,
+}
+
+export interface Value {
+  text: string;
+}
+
+export enum HeadingLevel {
   H1 = 'h1',
   H2 = 'h2',
   H3 = 'h3',
@@ -9,13 +20,68 @@ export enum Heading {
   H6 = 'h6'
 }
 
-
-export enum Tags {
-  PAGE_BREAK,
-  PAGE_NUMBER,
+export interface HeadingValue extends Value {
+  level: HeadingLevel;
 }
 
-export interface MjMetaData {
+export interface TableState {
+  element: { name: string, className: string, idName: string },
+  header: HTMLElement,
+  body: HTMLElement,
+  table: HTMLElement,
+}
+
+export interface TableCell {
+  value: string;
+  className?: string;
+  idName?: string;
+  style?: string;
+}
+
+export enum TableReservedField {
+  index = 'index',  // Zero base
+  row = 'row',  // index + 1
+  empty = 'empty',  // an empty string = ""
+}
+
+export interface TableOptions {
+  [key: string]: any;
+  index: number;  // Zero base
+  row: number;  // index + 1
+  empty: string;  // an empty string = ""
+}
+
+export interface TableField {
+  (item: object, opt: TableOptions) : string[] | TableCell[]
+}
+
+export interface TableValue {
+  items: object[];
+  fields: string[] | TableField;
+  header?: string[] | TableCell[];
+  footer?: string[] | TableCell[];
+}
+
+export enum TableCellType {
+  Header = 'th',
+  Body = 'td',
+}
+
+export function isTableCell(obj: string[] | TableCell[] | TableField) {
+  return Array.isArray(obj) && typeof obj[0] === 'object';
+}
+
+export function isTableField(obj: string[] | TableCell[] | TableField) {
+  return !Array.isArray(obj) && typeof obj === 'function';
+}
+
+export interface PageHolder {
+  header: HTMLElement;
+  content: HTMLElement;
+  footer: HTMLElement;
+}
+
+export interface MetaData {
   title?: string;
   css?: string[];
   style?: string;
@@ -23,14 +89,14 @@ export interface MjMetaData {
 }
 
 export interface MjElement {
-  elementName: string;
+  tag: Tags;
+  value?: Value | HeadingValue | TableValue;
   className?: string;
   idName?: string;
-  value?: string;
 }
 
-export interface MjData {
-  metaData: MjMetaData;
+export interface Data {
+  metaData: MetaData;
   content: MjElement[];
   header?: MjElement[];
   footer?: MjElement[];
@@ -81,8 +147,6 @@ page[type="A5_Landscape"] {
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  height: 100px;
-  border: 1px solid red;
   flex-shrink: 0;
 }
 
@@ -90,7 +154,6 @@ page[type="A5_Landscape"] {
   margin-left: 5px;
   margin-right: 5px;
   height: 100%;
-  border: 1px solid blue;
   overflow: hidden;
 }
 
@@ -98,8 +161,7 @@ page[type="A5_Landscape"] {
   margin-bottom: 5px;
   margin-left: 5px;
   margin-right: 5px;
-  height: 50px;
-  border: 1px solid red;
   flex-shrink: 0;
+  overflow: hidden;
 }
 `;

@@ -1,7 +1,7 @@
 import { PaperType } from './PaperType';
-import { MjElement, Heading, Tags, MjData, MjMetaData } from './Common';
+import { MjElement, Tags, HeadingLevel, Data, MetaData, TableValue } from './Common';
 
-export class Core {
+export class Generator {
   // Keep raw style css on this variable and merged into final html page before render
   private style: string = '';
 
@@ -32,17 +32,22 @@ export class Core {
 
   // Add text with html <P> element
   addText(text: string, className?: string, idName?: string): MjElement {
-    return {elementName: 'p', className: className, idName: idName, value: text};
+    return { tag: Tags.Text, value: { text }, className: className, idName: idName };
   }
 
   // Add Heading with html <H?> element
-  addHeading(text: string, type: Heading = Heading.H1, className?: string, idName?: string): MjElement {
-    return {elementName: type, className: className, idName: idName, value: text};
+  addHeading(text: string, level: HeadingLevel = HeadingLevel.H1, className?: string, idName?: string): MjElement {
+    return { tag: Tags.Heading, value: { text, level }, className: className, idName: idName };
   }
-
+  
   // Add special internal tag for page break
   addPageBreak(): MjElement {
-    return { elementName: `${Tags.PAGE_BREAK}` };
+    return { tag: Tags.PageBreak };
+  }
+  
+  // Add table with some style & data
+  addTable(value: TableValue, className?: string, idName?: string): MjElement {
+    return { tag: Tags.Table, value, className, idName };
   }
 
   // Set content to specify which elements have to be in the content section of a page
@@ -61,15 +66,15 @@ export class Core {
   }
 
   // Main generator function that's generate final data object
-  generate(): MjData {
-    let metaData: MjMetaData = {
+  generate(): Data {
+    let metaData: MetaData = {
       title: this.title,
       css: this.headCss,
       paperType: this.paperType,
       style: this.style
     };
 
-    let data: MjData = {
+    let data: Data = {
       metaData: metaData,
       header: this.header,
       footer: this.footer,

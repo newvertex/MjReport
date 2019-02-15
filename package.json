@@ -1,9 +1,10 @@
 {
   "name": "mjreport",
-  "version": "0.0.1",
-  "description": "A simple Javascript report library to make report from html",
+  "version": "1.0.2",
+  "description": "A simple Javascript report library to make report from html for Electron and browser",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "main:umd": "dist/umd/index.min.js",
   "module": "dist/esm/index.js",
   "files": [
     "dist/**/*"
@@ -11,8 +12,8 @@
   "scripts": {
     "build:cjs": "./node_modules/.bin/tsc",
     "build:esm": "./node_modules/.bin/tsc --module es2015 --target es5 --outDir dist/esm",
-    "build:umd": "./node_modules/.bin/rollup dist/esm/index.js --format umd --name MjReport --file dist/mjreport.umd.js",
-    "build:umd:min": "./node_modules/.bin/uglifyjs --compress --mangle --comments --output dist/mjreport.umd.min.js -- dist/mjreport.umd.js",
+    "build:umd": "./node_modules/.bin/rollup dist/esm/index.js --format umd --name MjReport --file dist/umd/index.js",
+    "build:umd:min": "./node_modules/.bin/uglifyjs --compress --mangle --comments --output dist/umd/index.min.js -- dist/umd/index.js",
     "build": "npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
     "prepare": "npm run build"
   },

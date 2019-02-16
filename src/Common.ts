@@ -137,9 +137,13 @@ page[type="A5_Landscape"] {
 }
 
 @media print {
+  .no-print {
+    display: none;
+  } 
+  
   body, page {
     margin: 0;
-    box-shadow: 0;
+    box-shadow: none;
   }
 }
 
@@ -148,6 +152,7 @@ page[type="A5_Landscape"] {
   margin-left: 5px;
   margin-right: 5px;
   flex-shrink: 0;
+  position: relative;
 }
 
 .content_section {
@@ -163,5 +168,68 @@ page[type="A5_Landscape"] {
   margin-right: 5px;
   flex-shrink: 0;
   overflow: hidden;
+  position: relative;
+}
+
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin: auto;
+  padding:5px;
+  width: 80%;
+}
+
+th {
+  border-bottom: 2px solid black;
+  border-right: 1px solid black;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 5px;
+  vertical-align: middle;
+}
+
+tr {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+tr:hover td {
+  background:rgb(219, 222, 255);
+}
+
+tr:nth-child(odd) td {
+  background:#EBEBEB;
+}
+
+tr:nth-child(odd):hover td {
+  background:rgb(219, 222, 255);
+}
+
+td {
+  font-size:18px;
+  vertical-align:middle;
+  padding:8px;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+} 
+
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 `;

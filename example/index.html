@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Example of using MjReport Library</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- import MjReport script from unpkg -->
+  <script src="https://unpkg.com/mjreport/dist/umd/index.min.js"></script>
+  
+  <!-- import json-fn to encode data for passing to another page with url -->
+  <script src="https://unpkg.com/json-fn"></script>
+
+
+  <script>
+    var mainData = null;
+
+    var samplePersons = [
+            {id: 1, name: 'Max', last: 'foo'},
+            {id: 2, name: 'jax', last: 'bar'},
+            {id: 3, name: 'Marty', last: 'white'},
+          ];
+    
+    function generate() {
+      // Create new instance of mj report generator
+      var generator = new MjReport.Generator('My Mj', MjReport.PaperType.A5_Landscape)
+
+      // Set css style of page elements, also can rewrite default rules
+      generator.setStyle(`
+        .header_section { position: relative; } 
+        .header_love { position: absolute; right: 0; top: 0; }
+        .footer_text { font-size: x-small; }
+        `);
+    
+      // Set report page header,
+      generator.setHeader([
+        generator.addHeading('MjReport Example', MjReport.HeadingLevel.H3),
+        generator.addText('<3', 'header_love'),
+      ])
+
+      // Set report page footer
+      generator.setFooter([
+        generator.addText('Developed by @newvertex(Mojtaba Rabiei)', 'footer_text'),
+      ])
+      
+      // Set report main content
+      generator.setContent([
+        generator.addText('A simple paragraph tag to show some text on the page'),
+        generator.addText('Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti natus, distinctio pariatur consequuntur id, libero totam sint rem beatae, odio voluptatem laboriosam harum. Id, quam. Dolore voluptatum mollitia deleniti velit.'),
+        generator.addText('Just use pagebreak to create new page ;-)'),
+        generator.addPageBreak(),
+        generator.addHeading('Heading example', 'h2'),
+        generator.addText('Time to show the data table:'),
+        generator.addTable({
+          items: samplePersons,
+          header:['ID', 'Name', 'Last Name', 'Row'], 
+          fields: ['id', 'name', 'last', '@row']
+        }),
+        generator.addText('On the above table we just use field name to get data from persons array'),
+        generator.addText('check another sample that use calback function to return each table data row'),
+        generator.addTable({
+          items: samplePersons,
+          header:['ID', 'Full Name', 'Row'], 
+          fields: function(item, opt) {
+            return [ item.id, item.name + '.' + item.last, opt.row ]
+          }
+        }),
+        generator.addText('repeat table header on new page'),
+      ]);
+      
+      mainData = generator.generate();
+      
+      return mainData;
+    }
+
+    // To render data and show on current page
+    function showReport() {
+      var renderer = new MjReport.Renderer(mainData, 'mjRoot');
+      renderer.draw();
+    }
+
+    // To encode and pass data to another page to test renderer on single page
+    function openPage() {
+      let data = generate();
+      window.open("show.html?data=" + encodeURI(JSONfn.stringify(data)));
+    }
+    
+    // clear the current container 
+    function clearPage() {
+        console.log('clear the page')
+        document.getElementById('mjRoot').innerHTML = ''
+    }
+  </script>
+  <style>
+    .container{
+      padding: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 3px;
+      padding: 0.6em 1.2em;
+      background: rgb(14, 139, 255);
+      color: #ffffff;
+      border: 2px solid rgb(14, 139, 255);
+      transition: background 0.2s;
+    }
+
+    .btn:hover, .btn:focus {
+      background:  none;
+      border: 2px solid rgb(14, 139, 255);
+      color: rgb(14, 139, 255);
+    }
+
+    hr, .hr {
+      box-sizing: content-box;
+      height: 1px;
+      background: #eee;
+      border: 0;
+      margin-top: 1em;
+      margin-bottom: 1em; 
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print container">
+    <ol>
+      <li>Click on <strong>Generate</strong> button to generate sample report,
+         <em>
+            to see the result on current page you have to click on <strong>Show on Current page</strong> button.
+         </em> </li>
+      <li>Use <strong>show data in new page</strong> button to see the result of report in new web page.</li>
+      <li>Use <strong>clear</strong> button to clean the current page report.</li>
+    </ol>
+    <a class="btn" href="#" onclick="generate()">Generate</a>
+    <a class="btn" href="#" onclick="showReport()">Show on current page</a>
+    <a class="btn" href="#" onclick="clearPage()">Clear</a>
+    <a class="btn" href="#" onclick="openPage()">Show data in new page</a>
+    <hr>
+  </div>
+
+  <div id="mjRoot"></div>
+</body>
+</html>

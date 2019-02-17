@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Example of using MjReport Library</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://unpkg.com/mjreport/dist/umd/index.min.js"></script>
+  <script src="https://unpkg.com/json-fn"></script>
+  <script>
+
+    // decode data from url
+    function getData() {
+      var url = window.location.href;
+      return JSONfn.parse(decodeURI(url.slice(url.indexOf('?') + 1, url.length + 1).split('=')[1]));
+    }
+
+    // Render report elements
+    function showReport(data) {
+      var renderer = new MjReport.Renderer(data, 'mjRoot');
+      renderer.draw();
+    }
+
+    window.addEventListener('load', () => {
+      // fetch the data from server or like here from url
+      showReport(getData());
+    })
+
+  </script>
+</head>
+<body>
+  <div id="mjRoot"></div>
+</body>
+</html>

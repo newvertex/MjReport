@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Report Window</title>
+  <style>
+    .container{
+      position: sticky;
+      top:0;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 3px;
+      padding: 0.6em 1.2em;
+      background: rgb(14, 139, 255);
+      color: #ffffff;
+      border: 2px solid rgb(14, 139, 255);
+      transition: background 0.2s;
+    }
+
+    .btn:hover, .btn:focus {
+      background:  none;
+      border: 2px solid rgb(14, 139, 255);
+      color: rgb(14, 139, 255);
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print container">
+    <a class="btn" href="#" onclick="saveAsPdf()">Save As PDF</a>
+    <a class="btn" href="#" onclick="printer()">Print</a>
+  </div>
+  <div id="mjRoot"></div>
+  <script src="report.js"></script>
+</body>
+</html>

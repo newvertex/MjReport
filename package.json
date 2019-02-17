@@ -1,7 +1,7 @@
 {
   "name": "mjreport",
-  "version": "1.0.3",
-  "description": "A simple Javascript report library to make report from html for Electron and browser",
+  "version": "1.0.4",
+  "description": "A simple Javascript report library to make report from html for Electron and browser with no dependency and written in Typescript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "main:umd": "dist/umd/index.min.js",

@@ -1,6 +1,6 @@
 {
   "name": "mjreport",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple Javascript report library to make report from html for Electron and browser",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

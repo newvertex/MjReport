@@ -23,7 +23,7 @@ export class Renderer {
 
     // Add raw style of page in the head tag
     let style = this.createDomElement('style');
-    style.innerHTML = `${DefaultStyles} ${this.data.metaData.style}`;
+    style.innerHTML = `${DefaultStyles} ${this.data.metaData.style} ${PaperType.getStyle(this.data.metaData.paperType)}`;
     document.head.append(style);
 
     // Add all css link to head tag

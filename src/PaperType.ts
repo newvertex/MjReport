@@ -18,10 +18,33 @@ export namespace PaperType {
         return { height: 148, width: 210 };
     }
   }
+  export function getRule(type: PaperType): string {
+    switch (type) {
+      case PaperType.A4_Portrait:
+        return 'a4 portrait';
+      case PaperType.A5_Portrait:
+        return 'a5 portrait';
+      case PaperType.A4_Landscape:
+        return 'a4 landscape';
+      case PaperType.A5_Landscape:
+        return 'a5 landscape';
+    }
+  }
+
+  export function getSize(type: PaperType): { pageSize: string, landscape: boolean } {
+    switch (type) {
+      case PaperType.A4_Portrait:
+        return { pageSize: 'A4', landscape: false };
+      case PaperType.A5_Portrait:
+        return { pageSize: 'A5', landscape: false };
+      case PaperType.A4_Landscape:
+        return { pageSize: 'A4', landscape: true };
+      case PaperType.A5_Landscape:
+        return { pageSize: 'A5', landscape: true };
+    }
+  }
+
   export function getStyle(type: PaperType): string {
-    return `page[type="${PaperType[type]}"] {
-      width: ${getDimension(type).width}mm;
-      height: ${getDimension(type).height}mm;
-    }`;
+    return `@page{ size: ${PaperType.getRule(type)}; }`;
   }
 }

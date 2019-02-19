@@ -59,7 +59,7 @@ export interface TableValue {
   items: object[];
   fields: string[] | TableCell[] | TableField;
   header?: string[] | TableCell[];
-  footer?: string[] | TableCell[];
+  footer?: string[][] | TableCell[][];
 }
 
 export enum TableCellType {

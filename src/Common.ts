@@ -57,7 +57,7 @@ export interface TableField {
 
 export interface TableValue {
   items: object[];
-  fields: string[] | TableField;
+  fields: string[] | TableCell[] | TableField;
   header?: string[] | TableCell[];
   footer?: string[] | TableCell[];
 }

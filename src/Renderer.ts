@@ -139,25 +139,50 @@ export class Renderer {
   }
 
   // Extract each item field before generate row of table body
-  private getTableField(item: any, fields: string[], opt: TableOptions): string[] {
-    let data: string[] = [];
-    
-    for(let field of fields) {
-      if(item[field]) {
-        data.push(item[field])
-      } else if(field.includes('@')) {
-        for(let i in TableReservedField) {
-          if (field === `@${TableReservedField[i]}`) {
-            data.push(opt[TableReservedField[i]]);
-            break;
+  private getTableField(item: any, fields: string[] | TableCell[], opt: TableOptions): string[] | TableCell[] {
+    if (!isTableCell(fields)) {
+      let data: string[] = [];
+      
+      for(let field of fields as string[]) {
+        if(item[field]) {
+          data.push(item[field])
+        } else if(field.includes('@')) {
+          for(let i in TableReservedField) {
+            if (field === `@${TableReservedField[i]}`) {
+              data.push(opt[TableReservedField[i]]);
+              break;
+            }
           }
+        } else {
+          data.push(field);
         }
-      } else {
-        data.push(field);
       }
-    }
+      
+      return data;
+    } else {
+      let data: TableCell[] = [];
+      
+      for(let field of fields as TableCell[]) {
+        let f: TableCell = Object.create(field);
 
-    return data;
+        if(item[field.value]) {
+          f.value = item[field.value];
+          data.push(f)
+        } else if(field.value.includes('@')) {
+          for(let i in TableReservedField) {
+            if (field.value === `@${TableReservedField[i]}`) {
+              f.value = opt[TableReservedField[i]];
+              data.push(f)
+              break;
+            }
+          }
+        } else {
+          data.push(field);
+        }
+      }
+
+      return data;
+    }
   }
 
   // Create full filled table with header, body, footer
@@ -193,7 +218,7 @@ export class Renderer {
         let cb = value.fields as TableField;
         row = this.createTableRow(cb(item, opt));
       } else {
-        row = this.createTableRow(this.getTableField(item, value.fields as string[], opt));
+        row = this.createTableRow(this.getTableField(item, value.fields as TableCell[] | string[], opt));
       }
 
       this.addElement(row, null, true, state);

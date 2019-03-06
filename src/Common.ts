@@ -171,7 +171,7 @@ page[type="A5_Landscape"] {
   position: relative;
 }
 
-table {
+.basic_tbl {
   border: 1px solid black;
   border-collapse: collapse;
   margin: auto;
@@ -179,7 +179,7 @@ table {
   width: 80%;
 }
 
-th {
+.basic_tbl th {
   border-bottom: 2px solid black;
   border-right: 1px solid black;
   font-size: 20px;
@@ -188,24 +188,24 @@ th {
   vertical-align: middle;
 }
 
-tr {
+.basic_tbl tr {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
 
-tr:hover td {
+.basic_tbl tr:hover td {
   background:rgb(219, 222, 255);
 }
 
-tr:nth-child(odd) td {
+.basic_tbl tr:nth-child(odd) td {
   background:#EBEBEB;
 }
 
-tr:nth-child(odd):hover td {
+.basic_tbl tr:nth-child(odd):hover td {
   background:rgb(219, 222, 255);
 }
 
-td {
+.basic_tbl td {
   font-size:18px;
   vertical-align:middle;
   padding:8px;

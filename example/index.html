@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- import MjReport script from unpkg -->
   <script src="https://unpkg.com/mjreport/dist/umd/index.min.js"></script>
+  <!-- <script src="./../dist/umd/index.min.js"></script> -->
   
   <!-- import json-fn to encode data for passing to another page with url -->
   <script src="https://unpkg.com/json-fn"></script>
@@ -55,7 +56,7 @@
           items: samplePersons,
           header:['ID', 'Name', 'Last Name', 'Row'], 
           fields: ['id', 'name', 'last', '@row']
-        }),
+        }, 'basic_tbl'),
         generator.addText('On the above table we just use field name to get data from persons array'),
         generator.addText('check another sample that use calback function to return each table data row'),
         generator.addTable({

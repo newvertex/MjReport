@@ -226,10 +226,11 @@ export class Renderer {
     
     if(value.footer) {
       // Create table footer
-      let tfoot = this.createDomElement('tfoot');
-      tfoot.append(this.createTableRow(value.footer));
-      this.addElement(tfoot, state.table);
+      for(let r of value.footer) {
+        this.addElement(this.createTableRow(r), null, true, state);
+      }
     }
+    
   }
 
   private createElement(element: MjElement, parent?: HTMLElement, noOverlap: boolean = true): HTMLElement {

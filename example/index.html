@@ -6,8 +6,8 @@
   <title>Example of using MjReport Library</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- import MjReport script from unpkg -->
-  <script src="https://unpkg.com/mjreport/dist/umd/index.min.js"></script>
-  <!-- <script src="./../dist/umd/index.min.js"></script> -->
+  <!-- <script src="https://unpkg.com/mjreport/dist/umd/index.min.js"></script> -->
+  <script src="./../dist/umd/index.min.js"></script>
   
   <!-- import json-fn to encode data for passing to another page with url -->
   <script src="https://unpkg.com/json-fn"></script>
@@ -47,6 +47,14 @@
       // Set report main content
       generator.setContent([
         generator.addText('A simple paragraph tag to show some text on the page'),
+        generator.addTable({ 
+          items: samplePersons,
+          fields: [
+              { value: '@row', className: 'text-center' },
+              { value: 'id', className: 'text-center' },
+              { value: 'name', className: 'text-center' },
+            ]
+        }, 'basic_tbl mainTbl'),
         generator.addText('Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti natus, distinctio pariatur consequuntur id, libero totam sint rem beatae, odio voluptatem laboriosam harum. Id, quam. Dolore voluptatum mollitia deleniti velit.'),
         generator.addText('Just use pagebreak to create new page ;-)'),
         generator.addPageBreak(),

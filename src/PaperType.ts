@@ -45,6 +45,6 @@ export namespace PaperType {
   }
 
   export function getStyle(type: PaperType): string {
-    return `@page{ size: ${PaperType.getRule(type)}; }`;
+    return `@page{ size: ${PaperType.getRule(type)}; margin: 0;}`;
   }
 }
